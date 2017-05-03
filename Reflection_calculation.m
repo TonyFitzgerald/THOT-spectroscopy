@@ -156,20 +156,36 @@ function calculate_index_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 ref_material=get(handles.ref_refractive_index,'Value');
+calculation_method=get(handles.calculation_method,'Value');
 switch ref_material
     case 1
-        n_1=2.12;n_2=1;
+        n_1=2.12; % window 
+        n_2=1; % ref
     case 2
-        n_1=1;n_2=1;
+        n_1=1; % window 
+        n_2=999999; % mirror
     case 3
-       n_1=handles.n_ref;n_2=1; 
+       n_1=handles.n_ref; % window 
+       n_2=1; % ref
 end
 
 polarization= get(handles.polarization,'Value');
-if polarization==1
+if polarization==1 % S/P mixed
     [f_range,n_sample,alpha_sample,e_sample]=UWA_reflection_jepsen(handles.fd_proc,n_1,n_2);
-else
-    [f_range, n_sample, alpha_sample, e_sample]=UWA_reflection_s_optimiaztion(handles.fd_proc,n_1,n_2, polarization);
+else if polarization==2 % S polarized
+        switch calculation_method
+            case 1 % S optimiaztion
+%                 [f_range, n_sample, alpha_sample, e_sample]=UWA_reflection(handles.fd_proc,n_1,n_2);
+            case 2 % S analytical
+                [f_range, n_sample, alpha_sample, e_sample]=UWA_reflection_s_analytical(handles.fd_proc,n_1,n_2);
+        end
+    else % P polarized
+        switch calculation_method
+            case 1 % P optimiaztion
+            case 2 % P analytical
+                [f_range, n_sample, alpha_sample, e_sample]=UWA_reflection_p_analytical(handles.fd_proc,n_1,n_2);
+        end
+    end
     
 end
     
@@ -309,7 +325,7 @@ function Fitting_Callback(hObject, eventdata, handles)
 % hObject    handle to Fitting (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Fitting_interface(handles.result);
+Model_fitting(handles.result);
 
 % --- Executes on selection change in calculation_method.
 function calculation_method_Callback(hObject, eventdata, handles)

@@ -318,7 +318,7 @@ function Fitting_Callback(hObject, eventdata, handles)
 % hObject    handle to Fitting (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Fitting_interface(handles.result);
+Model_fitting(handles.result);
 
 % --- Executes on selection change in calculation_method.
 function calculation_method_Callback(hObject, eventdata, handles)

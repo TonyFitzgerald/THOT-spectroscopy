@@ -52,7 +52,7 @@ for I=numel(f_range):-1:1
 %     else
 %         n_ref_use=n_ref;
 %     end
-    v = fmincon(@(v) Jepsen_error_function(v,R0(f_range(I)),n2,n1,config),v0,[],[],[],[],[1 0],[10 5],[],opts);
+    v = fmincon(@(v) Jepsen_error_function(v,R0(f_range(I)),n2,n1,config),v0,[],[],[],[],[1 -5],[10 5],[],opts);
     n_complex(I,1)=v(1)-1i*v(2);
     disp(horzcat('finished for ',num2str(fd_proc.f(f_range(I))),' THz'));
 end
